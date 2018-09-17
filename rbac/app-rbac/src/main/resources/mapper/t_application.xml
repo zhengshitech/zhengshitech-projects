@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.z.tech.rbac.mapper.ApplicationMapper">
+    <resultMap type="ApplicationDTO" id="defaultApplicationDTO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="app_key" property="appKey"/>
+        <result column="icon" property="icon"/>
+    </resultMap>
+
+    <select id="selectByID" parameterType="Integer" resultType="ApplicationDTO">
+        select id,name,app_key,icon
+        from `t_application` where id = #{id}
+    </select>
+    <select id="selectByAppKey" resultType="Integer">
+        select count(*)
+        from `t_application` where app_key=#{appKey}
+        <if test="null!=excludeId">
+            and id !=#{excludeId}
+        </if>
+    </select>
+
+    <select id="selectByIDs" parameterType="Integer" resultType="ApplicationDTO">
+        select id,name,app_key,icon
+        from `t_application` where id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="ApplicationDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_application`( name,app_key,icon)
+        values(#{name}, #{appKey}, #{icon})
+    </insert>
+
+    <update id="update" parameterType="ApplicationDTO">
+        update `t_application`
+        set name=#{name}, app_key=#{appKey} , icon=#{icon}
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `t_application` where id=#{id}
+    </delete>
+
+
+</mapper>

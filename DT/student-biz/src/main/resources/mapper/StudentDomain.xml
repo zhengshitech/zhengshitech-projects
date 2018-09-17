@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.zhengshi.student.mapper.StudentMapper">
+    <resultMap type="StudentDomain" id="resultListStudent">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_age" property="userAge"/>
+        <result column="phone" property="phone"/>
+        <result column="idnumber" property="idnumber"/>
+        <result column="s" property="s"/>
+    </resultMap>
+
+    <select id="selectById" parameterType="Long" resultType="StudentDomain">
+        select * from `student` where id = #{id} and s=1
+    </select>
+
+    <select id="selectByIds" parameterType="Long" resultType="StudentDomain">
+        select * from `student` where s=1 and id IN
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="add" parameterType="StudentDomain" useGeneratedKeys="true" keyProperty="id">
+        insert into `student`(id,user_name,user_age,phone,idnumber)
+        values(#{id},#{userName},#{userAge},#{phone},#{idnumber})
+    </insert>
+
+
+    <update id="update" parameterType="StudentDomain">
+        update `student` set user_name=#{userName},user_age=#{userAge},phone=#{phone},idnumber=#{idnumber} where id=#{id}
+    </update>
+
+    <update id="deleteById" parameterType="Long">
+        update `student` set s=2  where id=#{id}
+    </update>
+
+    <update id="insertRollback" parameterType="Long">
+        update `student` set s=3  where id=#{id}
+    </update>
+    <update id="deleteRollback" parameterType="Long">
+        update `student` set s=1  where id=#{id}
+    </update>
+
+
+    <update id="updateRollback" parameterType="Map">
+        update `student` set user_name=#{userName},user_age=#{userAge},phone=#{phone},idnumber=#{idnumber} where id=#{id}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,19 @@
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+	runtime('mysql:mysql-connector-java')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	// swagger
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
+
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
+	compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+
+	compile('tech.zhengshi.rbac:app-rbac-core:1.2.3')
+	compile('tech.zhengshi.rbac:app-rbac-api:1.2.3')
+
+}
+
+

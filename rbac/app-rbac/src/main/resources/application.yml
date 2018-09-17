@@ -1,0 +1,55 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: APP-RBAC-${spring.profiles.active}
+  datasource:
+    username: root
+    password: admin2
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/rbac?useunicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.z.tech.rbac.dto
+  configuration:
+    #驼峰命名
+    map-underscore-to-camel-case: true
+server:
+  port: 9999
+#  servlet:
+#    context-path: /rbac
+
+
+info:
+  name: ${spring.application.name}
+  context-path: ${server.servlet.context-path}
+
+management:
+  endpoint:
+    health:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /doctor
+
+## Swagger configuration
+swagger:
+  enabled: true
+  base-package: com.z.tech.rbac.controller
+  base-path: /**
+
+debug: true
+
+logging:
+  level:
+    org.springframework: debug
+    java.sql.PreparedStatement: debug
+    org.mybatis: debug
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://registry.zhengshi.tech:8761/eureka
+    prefer-same-zone-eureka: true
+  instance:
+    prefer-ip-address: true

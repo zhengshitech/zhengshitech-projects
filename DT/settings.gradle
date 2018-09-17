@@ -1,0 +1,11 @@
+rootProject.name = 'DT'
+
+include 'student-api'
+include 'student-biz'
+
+include 'class-api'
+include 'class-biz'
+
+include 'dt-core'
+include 'app'
+

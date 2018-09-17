@@ -1,0 +1,16 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://registry.zhengshi.tech:8761/eureka
+    prefer-same-zone-eureka: true
+  instance:
+    prefer-ip-address: true
+  # Allow Eureka to recognize two apps of the same type on the same host as separate instances:
+#  instance:
+#    instanceId: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+
+server:
+  port: 8000
+#  port: ${PORT:${SERVER_PORT:0}}
+#  这个的意思是随机指定个没使用的端口

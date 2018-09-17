@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.z.tech.rbac.mapper.RoleResourceMapper">
+    <resultMap type="RoleResourceDTO" id="defaultRoleResourceDTO">
+        <id column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="resource_id" property="resourceId"/>
+    </resultMap>
+
+    <select id="selectByID" parameterType="Integer" resultType="RoleResourceDTO">
+        select id,role_id,resource_id
+        from `t_role_resources` where id = #{id}
+    </select>
+
+    <select id="selectByResource" parameterType="Integer" resultType="RoleResourceDTO">
+        select id,role_id,resource_id
+        from `t_role_resources` where resource_id = #{resourceId}
+    </select>
+
+    <select id="selectByRole" parameterType="Integer" resultType="RoleResourceDTO">
+        select id,role_id,resource_id
+        from `t_role_resources` where role_id = #{roleId}
+    </select>
+
+    <select id="selectByIDs" parameterType="Integer" resultType="RoleResourceDTO">
+        select id,role_id,resource_id
+        from `t_role_resources` where id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="RoleResourceDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_role_resources`( role_id,resource_id)
+        values(#{roleId}, #{resourceId})
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_role_resources`( role_id,resource_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId},#{item.resourceId})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="RoleResourceDTO">
+        update `t_role_resources`
+        set role_id=#{roleId}, resource_id=#{resourceId}
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `t_role_resources` where id=#{id}
+    </delete>
+
+    <delete id="deleteByResource" parameterType="Integer">
+        delete from `t_role_resources` where resource_id=#{resourceId}
+    </delete>
+
+    <delete id="deleteByRole" parameterType="Integer">
+        delete from `t_role_resources` where role_id=#{roleId}
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.z.tech.rbac.mapper.RoleMapper">
+    <resultMap type="RoleDTO" id="defaultRoleDTO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="application_id" property="applicationId"/>
+    </resultMap>
+
+    <select id="selectByID" parameterType="Integer" resultType="RoleDTO">
+        select id,name,code,application_id
+        from `t_role` where id = #{id}
+    </select>
+    <select id="selectByCodeAndApplication" resultType="Integer">
+        select count(*)
+        from `t_role` where code=#{code} and application_id=#{applicationId}
+        <if test="null!=excludeId">
+            and id !=#{excludeId}
+        </if>
+    </select>
+
+    <select id="selectByIDs" parameterType="Integer" resultType="RoleDTO">
+        select id,name,code,application_id
+        from `t_role` where id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="RoleDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_role`( name,code,application_id)
+        values(#{name}, #{code}, #{applicationId})
+    </insert>
+
+    <update id="update" parameterType="RoleDTO">
+        update `t_role`
+        set name=#{name}, code=#{code} , application_id=#{applicationId}
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `t_role` where id=#{id}
+    </delete>
+
+
+</mapper>

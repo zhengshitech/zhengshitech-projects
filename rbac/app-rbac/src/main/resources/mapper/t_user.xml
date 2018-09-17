@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.z.tech.rbac.mapper.UserMapper">
+    <resultMap type="UserDTO" id="defaultUserDTO">
+        <id column="id" property="id"/>
+        <id column="tenant_id" property="tenantId"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="idnumber" property="idnumber"/>
+        <result column="password" property="password"/>
+        <result column="password_key" property="passwordKey"/>
+        <result column="type" property="type"/>
+        <result column="portrait" property="portrait"/>
+        <result column="department_id" property="departmentId"/>
+    </resultMap>
+
+    <select id="selectByID" parameterType="Integer" resultType="UserDTO">
+        select id,tenant_id,name,phone,idnumber,password,password_key,type,portrait,department_id
+        from `t_user` where id = #{id}
+    </select>
+
+    <select id="selectByPhone" parameterType="String" resultType="Integer">
+        select count(*)
+        from `t_user` where phone = #{phone}
+    </select>
+    <select id="selectByDepartment" parameterType="Integer" resultType="UserDTO">
+        select id,tenant_id,name,phone,idnumber,password,password_key,type,portrait,department_id
+        from `t_user` where department_id = #{departmentId}
+    </select>
+
+    <select id="selectByIDs" parameterType="Integer" resultType="UserDTO">
+        select id,tenant_id,name,phone,idnumber,password,password_key,type,portrait,department_id
+        from `t_user` where id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="UserDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_user`( tenant_id,name,phone,idnumber,password,password_key,type,portrait,department_id )
+        values( #{tenantId}, #{name}, #{phone}, #{idnumber}, #{password}, #{passwordKey}, #{type}, #{portrait}, #{departmentId} )
+    </insert>
+
+    <update id="update" parameterType="UserDTO">
+        update `t_user`
+        set tenant_id=#{tenantId}, name=#{name}, phone=#{phone}
+        , idnumber=#{idnumber},password= #{password},password_key= #{passwordKey},type= #{type}
+        , portrait=#{portrait},department_id= #{departmentId}
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `t_user` where id=#{id}
+    </delete>
+
+
+</mapper>

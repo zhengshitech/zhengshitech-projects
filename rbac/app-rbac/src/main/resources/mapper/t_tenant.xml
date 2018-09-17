@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.z.tech.rbac.mapper.TenantMapper">
+    <resultMap type="TenantDTO" id="defaultTenantDTO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="level" property="level"/>
+        <result column="pid" property="pid"/>
+        <result column="mask" property="mask"/>
+    </resultMap>
+
+    <select id="selectByID" parameterType="Integer" resultType="TenantDTO">
+        select id,name,level,pid,mask
+        from `t_tenant` where id = #{id}
+    </select>
+    <select id="selectMaxMaskNum" parameterType="Integer" resultType="Integer">
+        select max(id)
+        from `t_tenant` where level = #{level}
+    </select>
+
+    <select id="selectByIDs" parameterType="Integer" resultType="TenantDTO">
+        select id,name,level,pid,mask
+        from `t_tenant` where id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="TenantDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_tenant`( name, level, pid, mask )
+        values( #{name}, #{level}, #{pid}, #{mask} )
+    </insert>
+
+    <update id="update" parameterType="TenantDTO">
+        update `t_tenant`
+        set name=#{name}, level=#{level}, pid=#{pid}, mask=#{mask}
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `t_tenant` where id=#{id}
+    </delete>
+
+
+</mapper>

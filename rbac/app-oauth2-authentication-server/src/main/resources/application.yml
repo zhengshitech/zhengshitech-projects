@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: APP-AUTHENTICATION-${spring.profiles.active}
+  redis:
+    host: 192.168.2.56
+    password: Sxw@123456
+    port: 6379
+    database: 6
+server:
+  port: 6666
+
+## Swagger configuration
+swagger:
+  enabled: true
+  base-package: com.z.tech.rbac.controller
+  base-path: /**
+
+debug: true
+logging:
+  level:
+    org.springframework: debug

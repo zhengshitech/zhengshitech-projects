@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.z.tech.rbac.mapper.ResourceMapper">
+    <resultMap type="ResourceDTO" id="defaultResourceDTO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="resource_key" property="resourceKey"/>
+        <result column="type" property="type"/>
+        <result column="application_id" property="applicationId"/>
+    </resultMap>
+
+    <select id="selectByID" parameterType="Integer" resultType="ResourceDTO">
+        select id,name,resource_key,type,application_id
+        from `t_resource` where id = #{id}
+    </select>
+
+    <select id="selectByResourceKeyAndApplication" resultType="Integer">
+        select count(*)
+        from `t_resource` where resource_key=#{resourceKey} and application_id=#{applicationId}
+        <if test="null!=excludeId">
+            and id !=#{excludeId}
+        </if>
+        <if test="null!=type">
+            and type =#{type}
+        </if>
+    </select>
+
+    <select id="selectByApplication" resultType="ResourceDTO">
+        select id,name,resource_key,type,application_id
+        from `t_resource` where application_id=#{applicationId}
+        <if test="null!=type">
+            and type =#{type}
+        </if>
+    </select>
+
+    <select id="selectByIDs" parameterType="Integer" resultType="ResourceDTO">
+        select id,name,resource_key,type,application_id
+        from `t_resource` where id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="ResourceDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_resource`( name,resource_key,type,application_id)
+        values(#{name}, #{resourceKey}, #{type}, #{applicationId})
+    </insert>
+
+    <update id="update" parameterType="ResourceDTO">
+        update `t_resource`
+        set name=#{name}, resource_key=#{resourceKey} ,type=#{type} , application_id=#{applicationId}
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `t_resource` where id=#{id}
+    </delete>
+
+
+</mapper>

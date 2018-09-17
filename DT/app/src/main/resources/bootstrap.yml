@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: DT-APP
+
+feign:
+  hystrix:
+    enabled: true
+#debug: true

@@ -1,0 +1,8 @@
+rootProject.name = 'rbac'
+include 'app-test'
+include 'app-rbac-core'
+include 'app-rbac-api'
+include 'app-rbac'
+include 'app-oauth2-authentication-server'
+include 'app-oauth2-resource-server'
+include 'app-oauth2-sso-server'

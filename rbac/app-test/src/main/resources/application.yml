@@ -1,0 +1,43 @@
+spring:
+#  main:
+#    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  application:
+    name: APP-RBAC-TEST-${spring.profiles.active}
+server:
+  port: 9998
+info:
+  name: ${spring.application.name}
+  context-path: ${server.servlet.context-path}
+
+
+
+management:
+  endpoint:
+    health:
+      enabled: true
+
+## Swagger configuration
+swagger:
+  enabled: true
+  base-package: com.z.tech.rbac.controller
+  base-path: /**
+
+debug: true
+
+logging:
+  level:
+    org.springframework: debug
+    java.sql.PreparedStatement: debug
+    org.mybatis: debug
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://registry.zhengshi.tech:8761/eureka
+    prefer-same-zone-eureka: true
+  instance:
+    prefer-ip-address: true
+
+feign.hystrix.enabled: true

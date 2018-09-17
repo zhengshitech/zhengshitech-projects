@@ -1,0 +1,67 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.0.M2'
+    }
+    repositories {
+        maven {
+            url "${nexusServer}/repository/zhengshitech/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'tech.zhengshi.rbac'
+    version = '1.2.3'
+    sourceCompatibility = 1.8
+
+    repositories {
+        maven {
+            url "${nexusServer}/repository/zhengshitech/"
+        }
+    }
+    ext {
+        springCloudVersion = 'Greenwich.BUILD-SNAPSHOT'
+    }
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    //$$$$$$$$jar upload 2 nenux
+    configurations {
+        deployerJars
+    }
+    uploadArchives {
+        repositories.mavenDeployer {
+            configuration = configurations.deployerJars
+            //release env
+            repository(url: "${nexusServer}/repository/zhengshitech-releases/") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            //snapshots env
+            snapshotRepository(url: "${nexusServer}/repository/zhengshitech-snapshots/") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+
+            pom.version = "$project.version"
+            pom.groupId = "$project.group"
+        }
+    }
+
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-http:2.2"
+    }
+
+}
+
+
